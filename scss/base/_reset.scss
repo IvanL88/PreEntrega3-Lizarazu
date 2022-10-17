@@ -1,0 +1,36 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    overflow-x: hidden;
+    background-color: $color-five;
+}
+
+html {
+    font: 18px;
+}
+
+a {
+    color: $color-first;
+
+    &:hover{
+        color: $color-second;
+    }
+}
+
+main {
+    margin: 20px;
+
+    & h1{
+        color: $color-four;
+        margin-bottom: 10px;
+        margin-top: 20px;
+    }
+
+    & p{
+        padding-top: 5px;
+    }
+}
+

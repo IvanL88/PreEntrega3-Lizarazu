@@ -1,0 +1,9 @@
+.btn {
+    background-color: $color-four;
+    color: $color-first;
+
+    &:hover{
+      background-color: $color-first !important;
+      color: $color-third !important;
+    }
+  }

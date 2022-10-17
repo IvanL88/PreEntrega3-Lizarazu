@@ -1,0 +1,18 @@
+.carrousel{
+  &-img{
+    object-fit: cover;
+    height: 50vh;
+  }
+
+  &-font{
+    color: black;
+  }
+
+  &-caption h5{
+    font-size: 2rem;
+  }
+
+  &-caption p{
+    font-weight: bold;
+  }
+}

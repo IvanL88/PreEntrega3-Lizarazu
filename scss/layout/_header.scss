@@ -1,0 +1,35 @@
+.container.nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+nav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+  
+    &-link {
+        color: $color-first;
+
+        &.active{
+            color: $color-third  !important;
+        }
+    }
+
+    & a:hover{
+        color: $color-second  !important;
+    }
+    
+}
+
+.img-logo:hover {
+    transform: rotate(15deg);
+    transition-duration: 2s;
+}
+
+.navBackground {
+    background-color: $color-four;
+    position: static;
+    top: 0px;
+}

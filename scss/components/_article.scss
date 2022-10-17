@@ -1,0 +1,29 @@
+section article {
+    margin-left: 20px;
+    border: 1px solid;
+    margin-bottom: 20px;
+    padding: 5px;
+    background-color: $color-first  !important;
+
+    &-noticias {
+        display: flex;
+        flex-direction: column;
+
+        & h3{
+            color: $color-four;
+        }
+    }
+
+}
+
+article h3 {
+    margin: 15px;
+    color: $color-four;
+}
+
+article p,
+img,
+label {
+    margin: 25px;
+    font-size: 1.2rem;
+}

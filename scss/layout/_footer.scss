@@ -1,0 +1,27 @@
+footer {
+  margin-top: 20px;
+  background-color: $color-four;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.footer-list {
+  padding-top: 5px;
+  list-style: none;
+
+  & a {
+    text-decoration: none;
+  }
+}
+
+.footer-title {
+  margin-top: 20px;
+  font-size: 1.25rem;
+  color: $color-five;
+  text-decoration: underline;
+
+  & div ul {
+    margin-left: 20px;
+  }
+}
