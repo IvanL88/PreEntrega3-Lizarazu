@@ -1,20 +1,24 @@
-public function enviarMail( $objMail=null)
-    //Envio de mail por usuario, pero sin auth de google
-    {
+<?php
+
+
+
+  public function enviarMailPorAuth($objMail=null)
+    //Envio de mail por usuario, pero con auth de google
+    { 
         //ENVIO DE MAILS
         $mail = new LATCOMSender();
 
-        //El que envia /Ejecutivo
-        $mail->From = $objMail->fromMail; //'crastelli@tolber.io';
-        $mail->Username= $objMail->fromMail; //'crastelli861W';
-        $mail->FromName = $objMail->fromName; // 'Cesar Rastelli';
-        $mail->Password= $objMail->fromPassword; //'crastelli861W';
+        $mail->AuthType     = "XOAUTH2"; //Tipo de autenticación SMTP.
+        $mail->CharSet      = "UTF-8"; //El conjunto de caracteres del mensaje.       
+        $mail->From         = $objMail->fromMail; //La dirección de correo electrónico del remitente del mensaje.
+        $mail->FromName     = $objMail->fromName; //El nombre de del mensaje.
+        $mail->TokenSender  = $objMail->fromSenderToken; // Token Sender
+        $mail->Username     = $objMail->fromMail; //Nombre de usuario
+        $mail->Subject      = $titulo = $objMail->motivo; //Asunto 
         
-        $mail->Subject = $titulo = $objMail->motivo;
+        $content = $objMail->texto;         
         
-        $content = $objMail->texto;       
-        //Al que se le envia /El Contacto
-        $mail->AddAddress($objMail->mail); 
+        $mail->AddAddress($objMail->mail); //Al que se le envia /El Contacto
 
         //Para las copias a enviar
         $arr_mails=explode(';', $objMail->mails);
@@ -24,13 +28,23 @@ public function enviarMail( $objMail=null)
 
         foreach ($objMail->files as $file) {
             $mail->AddAttachment($file['path'], $file['name']);
-        }
-        
-        //ReplyTo
-        $mail->AddReplyTo($objMail->fromMail); 
+        }        
+       
+        $mail->AddReplyTo($objMail->fromMail); //RespoderA    
+        $mail->Body    =  utf8_decode($content); //Cuerpo
+      
+        try{
+           return $mail->enviarPorAuth();       
+        }catch (Exception $e) {
+            echo "Excepción capturada: ", $e->getMessage(), "\n";
+            log_message('error', 'error'); 
+            return false;
+        }       
 
-        $mail->Body    =  utf8_decode($content);
-   
-        return $mail->enviar();//DESCOMENTAR    
+    } 
 
-    }
+
+
+
+
+?>
