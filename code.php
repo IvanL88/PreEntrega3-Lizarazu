@@ -2,50 +2,46 @@
 
 
 
-public function enviarMailPorUsuario($objMail=null)
-    //Envio de mail por usuario
-    { 
-        //ENVIO DE MAILS
-        $mail = new LATCOMSender();     
-        $mail->CharSet      = "UTF-8"; //El conjunto de caracteres del mensaje.
-
-        //El que envia /Ejecutivo
-        $mail->From         = $objMail->fromMail; //La dirección de correo electrónico del remitente del mensaje.
-        $mail->FromName     = $objMail->fromName; //El nombre de del mensaje.
-        if ((!is_null($from->token_sender)) || ($from->token_sender!='')){
-            $mail->AuthType     = "XOAUTH2"; //Tipo de autenticación SMTP.
-            $mail->TokenSender  = $objMail->fromSenderToken; // Token Sender
-        }else{
-            $mail->Password = $objMail->fromPassword; //Contraseña
+public function enviarPorUsuario($debugEmail = NULL) {        
+        $this->isSMTP();
+        $this->isHTML(TRUE);
+        if ($debugEmail) {
+            $this->clearAddresses();
+            $this->clearAllRecipients();
+            $this->clearBCCs();
+            $this->clearCCs();
+            $this->addAddress($debugEmail);
+            $this->From = $debugEmail;
+            $this->addReplyTo($debugEmail);
+            $this->SMTPDebug = 3;
+            $this->send(TRUE);
+            echo '<pre>';
+            print_r($this);
+            exit;
+            return $this->send(TRUE);
         }
-        $mail->Username     = $objMail->fromMail; //Nombre de usuario
-        $mail->Subject      = $titulo = $objMail->motivo; //Asunto 
-        
-        $content = $objMail->texto;         
-
-        
-        $mail->AddAddress($objMail->mail); //Al que se le envia /El Contacto
-
-        //Para las copias a enviar
-        $arr_mails=explode(';', $objMail->mails);
-        for ($i=0; $i < count($arr_mails) ; $i++) {
-            $mail->AddCC($arr_mails[$i]);
-        }
-
-        foreach ($objMail->files as $file) {
-            $mail->AddAttachment($file['path'], $file['name']);
-        }               
-        $mail->AddReplyTo($objMail->fromMail); //RespoderA
-    
-        $mail->Body    =  utf8_decode($content); //Cuerpo      
-        try{
-        return $mail->enviarPorUsuario();       
+        try{             
+            if ((!is_null($this->TokenSender)) || ($from->TokenSender!='')){
+                $provider = new Google([
+                    "clientId" => $this->clientId,
+                    "clientSecret" => $this->clientSecret,
+                ]);      
+                $this->setOAuth(
+                    new PHPMailer\PHPMailer\OAuth([
+                        "provider"      => $provider,
+                        "clientId"      => $this->clientId,
+                        "clientSecret"  => $this->clientSecret,
+                        "refreshToken"  => $this->TokenSender,
+                        "userName"      => $this->Username,
+                    ])
+                );    
+            }
+            return $this->send(TRUE);
         }catch (Exception $e) {
-            echo "Excepción capturada: ", $e->getMessage(), "\n";
-            log_message('error', 'error'); 
+            log_message('error', $e->getMessage()); 
             return false;
-        }   
-    } 
+        }
+    }   
 
 
 
